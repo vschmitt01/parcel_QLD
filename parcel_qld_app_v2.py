@@ -46,7 +46,15 @@ def extract_field(parcel_number):
 def extract_overlays(parcel_number):
     url = "https://sppims-dams.dsdilgp.qld.gov.au/api/v1/lot_plan_geo/"
     payload = {"search_term_multiple": f"{parcel_number}"}
-    headers = {"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"}
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Origin": "https://sppims-dams.dsdilgp.qld.gov.au",
+        "Referer": "https://sppims-dams.dsdilgp.qld.gov.au/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/120.0.0.0 Safari/537.36",
+    }
 
     response = requests.post(url, headers=headers, data=json.dumps(payload))
     response.raise_for_status()
@@ -112,4 +120,5 @@ if st.button("Extract Planning Data"):
         )
     else:
         st.warning("Please enter at least one parcel number.")
+
 
