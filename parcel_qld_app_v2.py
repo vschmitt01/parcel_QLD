@@ -34,6 +34,9 @@ def extract_field(parcel_number):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                       "AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "en-AU,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
     }
 
     response = requests.post(url, headers=headers, data=json.dumps(payload))
@@ -54,6 +57,9 @@ def extract_overlays(parcel_number):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                       "AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "en-AU,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
     }
 
     response = requests.post(url, headers=headers, data=json.dumps(payload))
@@ -120,5 +126,6 @@ if st.button("Extract Planning Data"):
         )
     else:
         st.warning("Please enter at least one parcel number.")
+
 
 
