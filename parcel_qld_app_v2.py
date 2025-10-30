@@ -39,9 +39,18 @@ def extract_field(parcel_number):
         "Connection": "keep-alive",
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    # Using a Session makes Streamlit behave more like a browser
+    session = requests.Session()
+    response = session.post(url, headers=headers, data=json.dumps(payload), timeout=15)
+
+    if response.status_code == 403:
+        raise Exception("403 Forbidden — server blocked the request (likely CORS or origin header).")
+
     response.raise_for_status()
     data = response.json()
+
+    if "features" not in data or not data["features"]:
+        raise Exception(f"No data returned for {parcel_number}")
 
     return data["features"][0]["attributes"]
 
@@ -62,9 +71,19 @@ def extract_overlays(parcel_number):
         "Connection": "keep-alive",
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
+    # Using a Session makes Streamlit behave more like a browser
+    session = requests.Session()
+    response = session.post(url, headers=headers, data=json.dumps(payload), timeout=15)
+
+    if response.status_code == 403:
+        raise Exception("403 Forbidden — server blocked the request (likely CORS or origin header).")
+
     response.raise_for_status()
     data = response.json()
+
+    if "features" not in data or not data["features"]:
+        raise Exception(f"No data returned for {parcel_number}")
+
     data_geom = data["features"][0]["geometry"]
 
     # --- IMS layers ---
@@ -126,6 +145,7 @@ if st.button("Extract Planning Data"):
         )
     else:
         st.warning("Please enter at least one parcel number.")
+
 
 
 
